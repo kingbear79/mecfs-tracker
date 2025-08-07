@@ -3,10 +3,10 @@
 WordPress-Plugin zum täglichen Erfassen von Bell-Score, emotionalem Zustand, Symptomen und Notizen.
 
 ## Features
-- Frontend-Formular mit Shortcode `[mecfs_tracker_form]` für Tagesprotokolle
+- Frontend-Formular als Gutenberg-Block für Tagesprotokolle
 - Speicherung der Daten in eigenen Datenbanktabellen
-- Gutenberg-Blöcke für Formular und Diagramm
-- Export der eigenen Einträge als CSV über `[mecfs_export_button]`
+- Gutenberg-Blöcke für Formular, Diagramm und Export-Button
+- Export der eigenen Einträge als CSV über den Export-Block
 - REST-API-Endpunkt `/wp-json/mecfs/v1/entries` für Diagramme und externe Abfragen
 
 ## Konfiguration

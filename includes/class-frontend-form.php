@@ -5,7 +5,6 @@ class Frontend_Form {
 
     public function register() {
         add_action( 'wp_enqueue_scripts', [ $this, 'assets' ] );
-        add_shortcode( 'mecfs_tracker_form', [ $this, 'render' ] );
         add_action( 'wp_ajax_mecfs_save_entry', [ $this, 'save_entry' ] );
         add_action( 'wp_ajax_nopriv_mecfs_save_entry', '__return_false' );
     }

@@ -1,0 +1,9 @@
+{
+  "apiVersion": 2,
+  "name": "mecfs/export",
+  "title": "MECFS Export-Button",
+  "category": "widgets",
+  "icon": "download",
+  "editorScript": "file:./index.js",
+  "render": "mecfs_tracker_render_export_block"
+}

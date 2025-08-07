@@ -14,5 +14,6 @@ class Plugin {
     public function register_blocks() {
         register_block_type( __DIR__ . '/../blocks/form' );
         register_block_type( __DIR__ . '/../blocks/chart' );
+        register_block_type( __DIR__ . '/../blocks/export' );
     }
 }
