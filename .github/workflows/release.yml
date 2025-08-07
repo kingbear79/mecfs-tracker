@@ -19,13 +19,14 @@ jobs:
       - name: Install zip utility
         run: sudo apt-get update && sudo apt-get install -y zip
 
-      - name: Create release directory
-        run: mkdir -p release
+      - name: Prepare plugin folder
+        run: |
+          mkdir -p release/mecfs-tracker
+          rsync -av --exclude='.git*' --exclude='release' --exclude='.github' ./ release/mecfs-tracker/
 
       - name: Package plugin
-        run: |
-          zip -r release/mecfs-tracker.zip . \
-            -x '*.git*' 'release/*' '.github/*'
+        working-directory: release
+        run: zip -r mecfs-tracker.zip mecfs-tracker
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
