@@ -10,7 +10,13 @@ class Frontend_Form {
     }
 
     public function assets() {
-        wp_enqueue_script( 'mecfs-tracker', plugins_url( 'assets/form.js', dirname( __FILE__ ) ), [ 'jquery' ], '0.1.0', true );
+        wp_enqueue_script(
+            'mecfs-tracker',
+            plugins_url( 'assets/form.js', MECFS_TRACKER_PLUGIN_FILE ),
+            [ 'jquery' ],
+            MECFS_TRACKER_VERSION,
+            true
+        );
         wp_localize_script( 'mecfs-tracker', 'MECFSTracker', [
             'ajax'  => admin_url( 'admin-ajax.php' ),
             'nonce' => wp_create_nonce( 'mecfs_entry' ),
