@@ -27,8 +27,26 @@ class Frontend_Form {
         ?>
         <form id="mecfs-tracker-form">
             <input type="date" name="entry_date" value="<?php echo esc_attr( current_time( 'Y-m-d' ) ); ?>" />
-            <label><?php esc_html_e( 'Bell-Score', 'mecfs-tracker' ); ?></label>
-            <input type="range" name="bell_score" min="0" max="100" />
+            <?php
+            $questions = [
+                __( 'Wie belastbar fühlen Sie sich heute körperlich?', 'mecfs-tracker' ),
+                __( 'Wie gut können Sie heute mentale Aufgaben bewältigen?', 'mecfs-tracker' ),
+                __( 'Wie oft müssen Sie sich heute ausruhen?', 'mecfs-tracker' ),
+                __( 'Wie weit können Sie sich heute außer Haus bewegen?', 'mecfs-tracker' ),
+                __( 'Wie gut sind Ihre Symptome heute kontrollierbar?', 'mecfs-tracker' ),
+            ];
+            foreach ( $questions as $index => $question ) :
+                ?>
+                <fieldset class="bell-question">
+                    <legend><?php echo esc_html( $question ); ?></legend>
+                    <?php for ( $i = 0; $i <= 4; $i++ ) : ?>
+                        <label><input type="radio" name="bell_q<?php echo $index + 1; ?>" value="<?php echo $i; ?>" required /> <?php echo $i; ?></label>
+                    <?php endfor; ?>
+                </fieldset>
+                <?php
+            endforeach;
+            ?>
+            <input type="hidden" name="bell_score" value="0" />
             <label><?php esc_html_e( 'Emotionaler Zustand', 'mecfs-tracker' ); ?></label>
             <input type="range" name="emotion" min="0" max="100" />
             <!-- TODO: Dynamische Symptome -->
