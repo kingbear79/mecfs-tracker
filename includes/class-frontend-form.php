@@ -27,8 +27,57 @@ class Frontend_Form {
         ?>
         <form id="mecfs-tracker-form">
             <input type="date" name="entry_date" value="<?php echo esc_attr( current_time( 'Y-m-d' ) ); ?>" />
-            <label><?php esc_html_e( 'Bell-Score', 'mecfs-tracker' ); ?></label>
-            <input type="range" name="bell_score" min="0" max="100" />
+            <?php
+            $questions = [
+                [
+                    'text'    => __( 'Wie viel Zeit hast du heute insgesamt im Liegen verbracht?', 'mecfs-tracker' ),
+                    'options' => [
+                        0  => __( 'Fast den ganzen Tag (22–24 h)', 'mecfs-tracker' ),
+                        10 => __( 'Mehr als 18 Stunden', 'mecfs-tracker' ),
+                        20 => __( 'Zwischen 12 und 18 Stunden', 'mecfs-tracker' ),
+                        30 => __( 'Weniger als 12 Stunden', 'mecfs-tracker' ),
+                    ],
+                ],
+                [
+                    'text'    => __( 'Was war heute deine körperlich anspruchsvollste Aktivität?', 'mecfs-tracker' ),
+                    'options' => [
+                        0  => __( 'Nur Toilette / Zähneputzen o. ä.', 'mecfs-tracker' ),
+                        20 => __( 'Körperpflege & Anziehen', 'mecfs-tracker' ),
+                        30 => __( 'Kleine Mahlzeit zubereiten, 1–2 kurze Wege in der Wohnung', 'mecfs-tracker' ),
+                        40 => __( 'Spaziergang, Haushalt, Einkauf oder > 30 Min aufrecht', 'mecfs-tracker' ),
+                    ],
+                ],
+                [
+                    'text'    => __( 'Wie stark haben sich heute deine Symptome nach körperlicher oder geistiger Aktivität verschlechtert?', 'mecfs-tracker' ),
+                    'options' => [
+                        0  => __( 'Stark – bereits nach kleinster Aktivität', 'mecfs-tracker' ),
+                        20 => __( 'Deutlich – auch bei einfacher Aktivität', 'mecfs-tracker' ),
+                        30 => __( 'Leicht – nach moderater Aktivität', 'mecfs-tracker' ),
+                        40 => __( 'Keine spürbare Verschlechterung', 'mecfs-tracker' ),
+                    ],
+                ],
+                [
+                    'text'    => __( 'Wie lange konntest du dich heute am Stück geistig konzentrieren (z. B. lesen, zuhören, schreiben)?', 'mecfs-tracker' ),
+                    'options' => [
+                        10 => __( 'Unter 5 Minuten', 'mecfs-tracker' ),
+                        20 => __( '5–15 Minuten', 'mecfs-tracker' ),
+                        30 => __( '15–30 Minuten', 'mecfs-tracker' ),
+                        40 => __( 'Über 30 Minuten', 'mecfs-tracker' ),
+                    ],
+                ],
+            ];
+            foreach ( $questions as $index => $question ) :
+                ?>
+                <fieldset class="bell-question">
+                    <legend><?php echo esc_html( $question['text'] ); ?></legend>
+                    <?php foreach ( $question['options'] as $value => $label ) : ?>
+                        <label><input type="radio" name="bell_q<?php echo $index + 1; ?>" value="<?php echo esc_attr( $value ); ?>" required /><?php echo esc_html( $label ); ?></label>
+                    <?php endforeach; ?>
+                </fieldset>
+                <?php
+            endforeach;
+            ?>
+            <input type="hidden" name="bell_score" value="0" />
             <label><?php esc_html_e( 'Emotionaler Zustand', 'mecfs-tracker' ); ?></label>
             <input type="range" name="emotion" min="0" max="100" />
             <!-- TODO: Dynamische Symptome -->
