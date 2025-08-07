@@ -31,3 +31,16 @@ Die Antworten werden summiert, durch die maximale Punktzahl (5 Fragen × 4 Punkt
 ```
 Bell-Score = (Summe der Antworten / 20) × 100
 ```
+
+## Entwicklung und Build
+
+Die Gutenberg-Blöcke werden mit [@wordpress/scripts](https://developer.wordpress.org/block-editor/reference-guides/packages/packages-scripts/) kompiliert. Im Repository sind die vorkompilierten Assets (`index.js` und `index.asset.php`) für jeden Block bereits enthalten, sodass das Plugin sofort einsatzbereit ist.
+
+Zum Neuaufbau der Assets:
+
+```
+npm install
+npm run build
+```
+
+Die erzeugten Dateien werden in den jeweiligen Block-Verzeichnissen unter `blocks/chart`, `blocks/form` und `blocks/export` gespeichert.

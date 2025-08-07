@@ -2,7 +2,9 @@
 name: Build Release
 
 'on':
+
   pull_request:
+
     branches:
       - main
     types:
@@ -13,13 +15,17 @@ permissions:
 
 jobs:
   build:
-    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-        with:
-          ref: ${{ github.event.pull_request.merge_commit_sha }}
+
+      - name: Get version
+        id: get_version
+        run: |
+          VERSION=$(grep -E '^ \* Version:' mecfs-tracker.php \
+            | awk '{print $3}')
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
 
       - name: Get version
         id: get_version
