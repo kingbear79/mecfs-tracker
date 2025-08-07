@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build": "wp-scripts build blocks/**/index.js"
+    "build": "wp-scripts build blocks/form/index.js --output-path=build/form && cp build/form/index.js blocks/form/index.js && cp build/form/index.asset.php blocks/form/index.asset.php && wp-scripts build blocks/export/index.js --output-path=build/export && cp build/export/index.js blocks/export/index.js && cp build/export/index.asset.php blocks/export/index.asset.php && wp-scripts build blocks/chart/index.js --output-path=build/chart && cp build/chart/index.js blocks/chart/index.js && cp build/chart/index.asset.php blocks/chart/index.asset.php && rm -rf build"
   },
   "devDependencies": {
     "@wordpress/scripts": "^30.0.0"
