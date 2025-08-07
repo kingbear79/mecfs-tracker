@@ -20,12 +20,12 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y zip
 
       - name: Create release directory
-        run: mkdir -p Release
+        run: mkdir -p release
 
       - name: Package plugin
         run: |
           zip -r Release/mecfs-tracker.zip . \
-            -x '*.git*' 'Release/*' '.github/*'
+            -x '*.git*' 'Release/*' 'release/*' '.github/*'
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
