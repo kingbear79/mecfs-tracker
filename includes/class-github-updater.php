@@ -2,7 +2,7 @@
 namespace MECFSTracker;
 
 class GitHub_Updater {
-    private $owner = 'OWNER'; // TODO: Replace with actual GitHub username/organization
+    private $owner = 'kingbear79'; // TODO: Replace with actual GitHub username/organization
     private $repo = 'mecfs-tracker';
 
     public function register() {
