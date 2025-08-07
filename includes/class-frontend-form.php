@@ -21,6 +21,9 @@ class Frontend_Form {
         if ( ! is_user_logged_in() ) {
             return '<p>' . esc_html__( 'Bitte anmelden.', 'mecfs-tracker' ) . '</p>';
         }
+        global $wpdb;
+        $symptom_table = $wpdb->prefix . 'mecfs_symptoms';
+        $symptoms      = $wpdb->get_results( "SELECT id, label FROM $symptom_table ORDER BY label" );
         ob_start();
         ?>
         <form id="mecfs-tracker-form">
@@ -78,7 +81,17 @@ class Frontend_Form {
             <input type="hidden" name="bell_score" value="0" />
             <label><?php esc_html_e( 'Emotionaler Zustand', 'mecfs-tracker' ); ?></label>
             <input type="range" name="emotion" min="0" max="100" />
-            <!-- TODO: Dynamische Symptome -->
+            <div id="symptom-list">
+                <h4><?php esc_html_e( 'Symptome', 'mecfs-tracker' ); ?></h4>
+                <?php foreach ( $symptoms as $symptom ) : ?>
+                    <div class="symptom-field">
+                        <span><?php echo esc_html( $symptom->label ); ?></span>
+                        <input type="range" name="symptoms[<?php echo intval( $symptom->id ); ?>]" min="0" max="100" />
+                    </div>
+                <?php endforeach; ?>
+                <div id="custom-symptoms"></div>
+                <button type="button" id="add-symptom"><?php esc_html_e( 'Symptom hinzufügen', 'mecfs-tracker' ); ?></button>
+            </div>
             <textarea name="notes" placeholder="<?php esc_attr_e( 'Besonderheiten', 'mecfs-tracker' ); ?>"></textarea>
             <textarea name="positives" placeholder="<?php esc_attr_e( 'Was hat gutgetan?', 'mecfs-tracker' ); ?>"></textarea>
             <textarea name="negatives" placeholder="<?php esc_attr_e( 'Was hat belastet?', 'mecfs-tracker' ); ?>"></textarea>
@@ -95,11 +108,12 @@ class Frontend_Form {
         }
         global $wpdb;
         $table = $wpdb->prefix . 'mecfs_entries';
+        $entry_date = sanitize_text_field( $_POST['entry_date'] ?? '' );
         $wpdb->replace(
             $table,
             [
                 'user_id'    => get_current_user_id(),
-                'entry_date' => sanitize_text_field( $_POST['entry_date'] ?? '' ),
+                'entry_date' => $entry_date,
                 'bell_score' => intval( $_POST['bell_score'] ?? 0 ),
                 'emotion'    => intval( $_POST['emotion'] ?? 0 ),
                 'notes'      => wp_kses_post( $_POST['notes'] ?? '' ),
@@ -107,6 +121,50 @@ class Frontend_Form {
                 'negatives'  => wp_kses_post( $_POST['negatives'] ?? '' ),
             ]
         );
+
+        $entry_id = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM $table WHERE user_id = %d AND entry_date = %s", get_current_user_id(), $entry_date ) );
+
+        $symptom_user_table = $wpdb->prefix . 'mecfs_user_symptoms';
+        $wpdb->delete( $symptom_user_table, [ 'entry_id' => $entry_id ] );
+
+        if ( ! empty( $_POST['symptoms'] ) && is_array( $_POST['symptoms'] ) ) {
+            foreach ( $_POST['symptoms'] as $symptom_id => $severity ) {
+                $wpdb->insert(
+                    $symptom_user_table,
+                    [
+                        'user_id'    => get_current_user_id(),
+                        'symptom_id' => intval( $symptom_id ),
+                        'severity'   => intval( $severity ),
+                        'entry_id'   => $entry_id,
+                    ]
+                );
+            }
+        }
+
+        if ( ! empty( $_POST['new_symptoms'] ) && is_array( $_POST['new_symptoms'] ) ) {
+            $symptom_table = $wpdb->prefix . 'mecfs_symptoms';
+            foreach ( $_POST['new_symptoms'] as $symptom ) {
+                $label = sanitize_text_field( $symptom['label'] ?? '' );
+                if ( '' === $label ) {
+                    continue;
+                }
+                $slug       = sanitize_title( $label );
+                $symptom_id = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM $symptom_table WHERE slug = %s", $slug ) );
+                if ( ! $symptom_id ) {
+                    $wpdb->insert( $symptom_table, [ 'slug' => $slug, 'label' => $label ] );
+                    $symptom_id = $wpdb->insert_id;
+                }
+                $wpdb->insert(
+                    $symptom_user_table,
+                    [
+                        'user_id'    => get_current_user_id(),
+                        'symptom_id' => $symptom_id,
+                        'severity'   => intval( $symptom['severity'] ?? 0 ),
+                        'entry_id'   => $entry_id,
+                    ]
+                );
+            }
+        }
         wp_send_json_success();
     }
 }

@@ -49,6 +49,24 @@ class Database {
         ) $charset;";
 
         dbDelta( $sql );
+
+        self::seed_symptoms();
+    }
+
+    private static function seed_symptoms() {
+        global $wpdb;
+        $table = $wpdb->prefix . 'mecfs_symptoms';
+        $defaults = [
+            [ 'slug' => 'fatigue', 'label' => 'Fatigue' ],
+            [ 'slug' => 'pain', 'label' => 'Schmerzen' ],
+            [ 'slug' => 'brain-fog', 'label' => 'Brain Fog' ],
+        ];
+        foreach ( $defaults as $symptom ) {
+            $exists = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM $table WHERE slug = %s", $symptom['slug'] ) );
+            if ( ! $exists ) {
+                $wpdb->insert( $table, $symptom );
+            }
+        }
     }
 
     public static function maybe_cleanup() {
