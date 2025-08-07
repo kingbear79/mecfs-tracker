@@ -1,0 +1,9 @@
+{
+  "apiVersion": 2,
+  "name": "mecfs/form",
+  "title": "MECFS Tracker Formular",
+  "category": "widgets",
+  "icon": "clipboard",
+  "editorScript": "file:./index.js",
+  "render": "mecfs_tracker_render_form_block"
+}

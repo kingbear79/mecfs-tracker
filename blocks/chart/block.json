@@ -1,0 +1,8 @@
+{
+  "apiVersion": 2,
+  "name": "mecfs/chart",
+  "title": "MECFS Tracker Diagramm",
+  "category": "widgets",
+  "icon": "chart-bar",
+  "editorScript": "file:./index.js"
+}
