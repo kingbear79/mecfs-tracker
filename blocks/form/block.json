@@ -5,5 +5,5 @@
   "category": "widgets",
   "icon": "clipboard",
   "editorScript": "file:./index.js",
-  "render": "mecfs_tracker_render_form_block"
+  "render": "file:./render.php"
 }

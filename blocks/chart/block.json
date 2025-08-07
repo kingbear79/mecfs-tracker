@@ -4,5 +4,6 @@
   "title": "MECFS Tracker Diagramm",
   "category": "widgets",
   "icon": "chart-bar",
-  "editorScript": "file:./index.js"
+  "editorScript": "file:./index.js",
+  "render": "file:./render.php"
 }
