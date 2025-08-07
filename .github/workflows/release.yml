@@ -3,14 +3,13 @@ name: Build Release
 
 'on':
   pull_request:
-    types:
-      - closed
     branches:
       - main
+    types:
+      - closed
 
 permissions:
   contents: write
-  actions: write
 
 jobs:
   build:
@@ -21,6 +20,13 @@ jobs:
         uses: actions/checkout@v3
         with:
           ref: ${{ github.event.pull_request.merge_commit_sha }}
+
+      - name: Get version
+        id: get_version
+        run: |
+          VERSION=$(grep -E '^ \* Version:' mecfs-tracker.php \
+            | awk '{print $3}')
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
 
       - name: Install zip utility
         run: sudo apt-get update && sudo apt-get install -y zip
@@ -38,12 +44,11 @@ jobs:
         working-directory: release
         run: zip -r mecfs-tracker.zip mecfs-tracker
 
-      - name: Create pre-release
+      - name: Create release
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: prerelease-${{ github.run_number }}
-          name: "Pre-release ${{ github.run_number }}"
-          prerelease: true
+          tag_name: v${{ steps.get_version.outputs.version }}
+          name: "Release ${{ steps.get_version.outputs.version }}"
           files: release/mecfs-tracker.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
