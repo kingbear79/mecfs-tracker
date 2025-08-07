@@ -2,7 +2,7 @@
 /**
  * Plugin Name: MECFS Tracker
  * Description: Tagesprotokoll für Bell-Score, Emotionen, Symptome und Notizen.
- * Version:     0.1.4
+ * Version:     0.1.5
  * Author:      Christian Schweden
  * Text Domain: mecfs-tracker
  * Update URI:  https://github.com/kingbear79/mecfs-tracker
@@ -10,7 +10,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'MECFS_TRACKER_VERSION', '0.1.4' );
+define( 'MECFS_TRACKER_VERSION', '0.1.5' );
 define( 'MECFS_TRACKER_PLUGIN_FILE', __FILE__ );
 
 require_once __DIR__ . '/includes/autoloader.php';
