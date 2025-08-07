@@ -25,17 +25,3 @@ mecfs_tracker_run();
 
 register_activation_hook( __FILE__, [ '\\MECFSTracker\\Database', 'activate' ] );
 register_deactivation_hook( __FILE__, [ '\\MECFSTracker\\Database', 'maybe_cleanup' ] );
-
-if ( ! function_exists( 'mecfs_tracker_render_form_block' ) ) {
-    function mecfs_tracker_render_form_block() {
-        $form = new \MECFSTracker\Frontend_Form();
-        return $form->render();
-    }
-}
-
-if ( ! function_exists( 'mecfs_tracker_render_export_block' ) ) {
-    function mecfs_tracker_render_export_block() {
-        $exporter = new \MECFSTracker\Exporter();
-        return $exporter->button();
-    }
-}
