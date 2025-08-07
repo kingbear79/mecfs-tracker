@@ -1,10 +1,1 @@
-import { __ } from '@wordpress/i18n';
-import { useBlockProps } from '@wordpress/block-editor';
-
-export default function Edit() {
-    return (
-        <div {...useBlockProps()}>
-            <p>{__( 'Diagramm wird hier angezeigt.', 'mecfs-tracker' )}</p>
-        </div>
-    );
-}
+(()=>{"use strict";window.wp.i18n,window.wp.blockEditor,window.ReactJSXRuntime})();
