@@ -1,6 +1,6 @@
 # MECFS Tracker
 
-WordPress-Plugin zum täglichen Erfassen von Bell-Score, emotionalem Zustand, Symptomen und Notizen.
+WordPress-Plugin zum täglichen Erfassen von Bell-Score, emotionalem Zustand, individuellen Symptomen und Notizen.
 
 ## Features
 - Frontend-Formular als Gutenberg-Block für Tagesprotokolle
@@ -8,6 +8,7 @@ WordPress-Plugin zum täglichen Erfassen von Bell-Score, emotionalem Zustand, Sy
 - Gutenberg-Blöcke für Formular, Diagramm und Export-Button
 - Export der eigenen Einträge als CSV über den Export-Block
 - REST-API-Endpunkt `/wp-json/mecfs/v1/entries` für Diagramme und externe Abfragen
+- Individuelle Symptome mit Schweregrad erfassen
 
 ## Konfiguration
 - **Tabellenbereinigung:** Unter *Einstellungen → MECFS Tracker* kann festgelegt werden, ob die Datenbanktabellen bei Deaktivierung des Plugins gelöscht werden (`mecfs_tracker_cleanup`).

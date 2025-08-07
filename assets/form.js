@@ -1,4 +1,9 @@
 jQuery(function ($) {
+    let symptomIndex = 0;
+    $('#add-symptom').on('click', function () {
+        $('#custom-symptoms').append('<div class="symptom-field"><input type="text" name="new_symptoms[' + symptomIndex + '][label]" placeholder="Symptom" /> <input type="range" name="new_symptoms[' + symptomIndex + '][severity]" min="0" max="100" /></div>');
+        symptomIndex++;
+    });
     $('#mecfs-tracker-form').on('submit', function (e) {
         e.preventDefault();
         let sum = 0;
