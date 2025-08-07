@@ -5,9 +5,13 @@
  * Version:     0.1.0
  * Author:      Ihr Name
  * Text Domain: mecfs-tracker
+ * Update URI:  https://github.com/OWNER/mecfs-tracker
  */
 
 defined( 'ABSPATH' ) || exit;
+
+define( 'MECFS_TRACKER_VERSION', '0.1.0' );
+define( 'MECFS_TRACKER_PLUGIN_FILE', __FILE__ );
 
 require_once __DIR__ . '/includes/autoloader.php';
 
