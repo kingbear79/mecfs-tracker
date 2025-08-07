@@ -24,7 +24,7 @@ jobs:
 
       - name: Package plugin
         run: |
-          zip -r Release/mecfs-tracker.zip . \
+          zip -r release/mecfs-tracker.zip . \
             -x '*.git*' 'Release/*' 'release/*' '.github/*'
 
       - name: Upload artifact
