@@ -85,17 +85,65 @@ class Frontend_Form {
             endforeach;
             ?>
             <input type="hidden" name="bell_score" value="0" />
-            <label><?php esc_html_e( 'Emotionaler Zustand', 'mecfs-tracker' ); ?></label>
-            <input type="range" name="emotion" min="0" max="100" />
+            <div id="emotion-questions">
+                <h4><?php esc_html_e( 'Emotionaler Zustand', 'mecfs-tracker' ); ?></h4>
+                <?php
+                $emotion_questions = [
+                    [
+                        'id'     => 'aengste',
+                        'text'   => __( 'Wie stark fühlst Du Dich heute von Ängsten oder Sorgen belastet?', 'mecfs-tracker' ),
+                        'scale'  => __( '1 = überhaupt nicht, 10 = sehr stark', 'mecfs-tracker' ),
+                        'invert' => true,
+                    ],
+                    [
+                        'id'     => 'stimmung',
+                        'text'   => __( 'Wie ist Deine allgemeine Stimmung heute?', 'mecfs-tracker' ),
+                        'scale'  => __( '1 = sehr schlecht, 10 = sehr gut', 'mecfs-tracker' ),
+                        'invert' => false,
+                    ],
+                    [
+                        'id'     => 'antrieb',
+                        'text'   => __( 'Wie stark ist Dein innerer Antrieb heute?', 'mecfs-tracker' ),
+                        'scale'  => __( '1 = keinerlei Antrieb, 10 = sehr starker Antrieb', 'mecfs-tracker' ),
+                        'invert' => false,
+                    ],
+                    [
+                        'id'     => 'depressivität',
+                        'text'   => __( 'Wie stark fühlst Du Dich heute von depressiven Gedanken oder Gefühlen belastet?', 'mecfs-tracker' ),
+                        'scale'  => __( '1 = überhaupt nicht, 10 = sehr stark', 'mecfs-tracker' ),
+                        'invert' => true,
+                    ],
+                ];
+                foreach ( $emotion_questions as $q ) :
+                    ?>
+                    <div class="emotion-question">
+                        <label for="emotion-<?php echo esc_attr( $q['id'] ); ?>"><?php echo esc_html( $q['text'] ); ?></label>
+                        <input type="range" name="emotion[<?php echo esc_attr( $q['id'] ); ?>]" id="emotion-<?php echo esc_attr( $q['id'] ); ?>" min="1" max="10" value="5" />
+                        <span class="range-value">5</span>
+                        <div class="slider-scale"><span>1</span><span>10</span></div>
+                        <small><?php echo esc_html( $q['scale'] ); ?></small>
+                    </div>
+                    <?php
+                endforeach;
+                ?>
+            </div>
+            <input type="hidden" name="emotion" value="0" />
             <div id="symptom-list">
                 <h4><?php esc_html_e( 'Symptome', 'mecfs-tracker' ); ?></h4>
-                <?php foreach ( $symptoms as $symptom ) : ?>
-                    <div class="symptom-field">
-                        <span><?php echo esc_html( $symptom->label ); ?></span>
-                        <input type="range" name="symptoms[<?php echo intval( $symptom->id ); ?>]" min="0" max="100" />
-                    </div>
-                <?php endforeach; ?>
-                <div id="custom-symptoms"></div>
+                <table class="symptom-table">
+                    <tbody id="symptom-table-body">
+                        <?php foreach ( $symptoms as $symptom ) : ?>
+                            <tr class="symptom-field">
+                                <td><?php echo esc_html( $symptom->label ); ?></td>
+                                <td>
+                                    <input type="range" name="symptoms[<?php echo intval( $symptom->id ); ?>]" min="0" max="100" value="0" />
+                                    <span class="range-value">0</span>
+                                    <div class="slider-scale"><span>0</span><span>100</span></div>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
                 <button type="button" id="add-symptom"><?php esc_html_e( 'Symptom hinzufügen', 'mecfs-tracker' ); ?></button>
             </div>
             <textarea name="notes" placeholder="<?php esc_attr_e( 'Besonderheiten', 'mecfs-tracker' ); ?>"></textarea>
