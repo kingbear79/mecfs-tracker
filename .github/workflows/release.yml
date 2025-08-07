@@ -1,20 +1,26 @@
+---
 name: Build Release
 
-on:
-  push:
+'on':
+  pull_request:
+    types:
+      - closed
     branches:
       - main
-      
+
 permissions:
   contents: write
   actions: write
 
 jobs:
   build:
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.merge_commit_sha }}
 
       - name: Install zip utility
         run: sudo apt-get update && sudo apt-get install -y zip
@@ -22,14 +28,22 @@ jobs:
       - name: Prepare plugin folder
         run: |
           mkdir -p release/mecfs-tracker
-          rsync -av --exclude='.git*' --exclude='release' --exclude='.github' ./ release/mecfs-tracker/
+          rsync -av \
+            --exclude='.git*' \
+            --exclude='release' \
+            --exclude='.github' \
+            ./ release/mecfs-tracker/
 
       - name: Package plugin
         working-directory: release
         run: zip -r mecfs-tracker.zip mecfs-tracker
 
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
+      - name: Create pre-release
+        uses: softprops/action-gh-release@v1
         with:
-          name: mecfs-tracker
-          path: release/mecfs-tracker.zip
+          tag_name: prerelease-${{ github.run_number }}
+          name: "Pre-release ${{ github.run_number }}"
+          prerelease: true
+          files: release/mecfs-tracker.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
