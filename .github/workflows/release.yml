@@ -1,0 +1,34 @@
+name: Build Release
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install zip utility
+        run: sudo apt-get update && sudo apt-get install -y zip
+
+      - name: Create release directory
+        run: mkdir -p Release
+
+      - name: Package plugin
+        run: |
+          zip -r Release/mecfs-tracker.zip . \
+            -x '*.git*' 'Release/*' '.github/*'
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: mecfs-tracker
+          path: Release/mecfs-tracker.zip
