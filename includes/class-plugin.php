@@ -4,6 +4,7 @@ namespace MECFSTracker;
 class Plugin {
 
     public function run() {
+        ( new GitHub_Updater() )->register();
         ( new Admin_Settings() )->register();
         ( new Frontend_Form() )->register();
         ( new Exporter() )->register();
