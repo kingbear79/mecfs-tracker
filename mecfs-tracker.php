@@ -21,5 +21,11 @@ register_activation_hook( __FILE__, [ '\\MECFSTracker\\Database', 'activate' ] )
 register_deactivation_hook( __FILE__, [ '\\MECFSTracker\\Database', 'maybe_cleanup' ] );
 
 function mecfs_tracker_render_form_block() {
-    return do_shortcode( '[mecfs_tracker_form]' );
+    $form = new \MECFSTracker\Frontend_Form();
+    return $form->render();
+}
+
+function mecfs_tracker_render_export_block() {
+    $exporter = new \MECFSTracker\Exporter();
+    return $exporter->button();
 }

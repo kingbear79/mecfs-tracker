@@ -5,7 +5,6 @@ class Exporter {
 
     public function register() {
         add_action( 'wp_ajax_mecfs_export', [ $this, 'export_csv' ] );
-        add_shortcode( 'mecfs_export_button', [ $this, 'button' ] );
     }
 
     public function button() {
