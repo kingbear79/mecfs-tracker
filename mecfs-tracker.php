@@ -15,6 +15,10 @@ define( 'MECFS_TRACKER_PLUGIN_FILE', __FILE__ );
 
 require_once __DIR__ . '/includes/autoloader.php';
 
+add_action( 'wp_enqueue_scripts', function() {
+    wp_enqueue_style( 'mecfs-tracker', plugins_url( 'assets/mecfs-tracker.css', __FILE__ ), [], MECFS_TRACKER_VERSION );
+} );
+
 if ( ! function_exists( 'mecfs_tracker_run' ) ) {
     function mecfs_tracker_run() {
         $plugin = new \MECFSTracker\Plugin();

@@ -8,5 +8,13 @@
     padding: 0.5rem;
 }
 .bell-question label {
-    margin-right: 0.5rem;
+    display: block;
+    margin-bottom: 0.25rem;
+}
+#mecfs-tracker-chart {
+    max-width: 100%;
+    margin-top: 1rem;
+}
+#mecfs-export {
+    margin-top: 1rem;
 }

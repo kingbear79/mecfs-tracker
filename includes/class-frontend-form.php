@@ -10,7 +10,6 @@ class Frontend_Form {
     }
 
     public function assets() {
-        wp_enqueue_style( 'mecfs-tracker', plugins_url( 'assets/form.css', dirname( __FILE__ ) ), [], '0.1.0' );
         wp_enqueue_script( 'mecfs-tracker', plugins_url( 'assets/form.js', dirname( __FILE__ ) ), [ 'jquery' ], '0.1.0', true );
         wp_localize_script( 'mecfs-tracker', 'MECFSTracker', [
             'ajax'  => admin_url( 'admin-ajax.php' ),
@@ -28,19 +27,50 @@ class Frontend_Form {
             <input type="date" name="entry_date" value="<?php echo esc_attr( current_time( 'Y-m-d' ) ); ?>" />
             <?php
             $questions = [
-                __( 'Wie belastbar fühlen Sie sich heute körperlich?', 'mecfs-tracker' ),
-                __( 'Wie gut können Sie heute mentale Aufgaben bewältigen?', 'mecfs-tracker' ),
-                __( 'Wie oft müssen Sie sich heute ausruhen?', 'mecfs-tracker' ),
-                __( 'Wie weit können Sie sich heute außer Haus bewegen?', 'mecfs-tracker' ),
-                __( 'Wie gut sind Ihre Symptome heute kontrollierbar?', 'mecfs-tracker' ),
+                [
+                    'question' => __( 'Wie viel Zeit hast du heute insgesamt im Liegen verbracht (außer Schlaf)?', 'mecfs-tracker' ),
+                    'options'  => [
+                        [ 'label' => __( 'Fast den ganzen Tag (22–24 h)', 'mecfs-tracker' ), 'value' => 0 ],
+                        [ 'label' => __( 'Mehr als 18 h', 'mecfs-tracker' ), 'value' => 10 ],
+                        [ 'label' => __( '12–18 h', 'mecfs-tracker' ), 'value' => 20 ],
+                        [ 'label' => __( 'Unter 12 h', 'mecfs-tracker' ), 'value' => 30 ],
+                    ],
+                ],
+                [
+                    'question' => __( 'Was war heute deine körperlich anstrengendste Aktivität?', 'mecfs-tracker' ),
+                    'options'  => [
+                        [ 'label' => __( 'Nur Toilette / Zähneputzen', 'mecfs-tracker' ), 'value' => 0 ],
+                        [ 'label' => __( 'Körperpflege & Anziehen', 'mecfs-tracker' ), 'value' => 20 ],
+                        [ 'label' => __( 'Kleine Mahlzeit zubereiten, kurze Wege', 'mecfs-tracker' ), 'value' => 30 ],
+                        [ 'label' => __( 'Spaziergang, Haushalt, > 30 Min aufrecht', 'mecfs-tracker' ), 'value' => 40 ],
+                    ],
+                ],
+                [
+                    'question' => __( 'Wie stark haben sich deine Symptome heute nach Aktivität verschlechtert?', 'mecfs-tracker' ),
+                    'options'  => [
+                        [ 'label' => __( 'Sehr stark, schon nach wenig Aktivität', 'mecfs-tracker' ), 'value' => 0 ],
+                        [ 'label' => __( 'Deutlich spürbar', 'mecfs-tracker' ), 'value' => 20 ],
+                        [ 'label' => __( 'Leicht', 'mecfs-tracker' ), 'value' => 30 ],
+                        [ 'label' => __( 'Keine Verschlechterung', 'mecfs-tracker' ), 'value' => 40 ],
+                    ],
+                ],
+                [
+                    'question' => __( 'Wie lange konntest du dich heute am Stück konzentrieren (z. B. lesen, zuhören)?', 'mecfs-tracker' ),
+                    'options'  => [
+                        [ 'label' => __( 'Unter 5 Min', 'mecfs-tracker' ), 'value' => 10 ],
+                        [ 'label' => __( '5–15 Min', 'mecfs-tracker' ), 'value' => 20 ],
+                        [ 'label' => __( '15–30 Min', 'mecfs-tracker' ), 'value' => 30 ],
+                        [ 'label' => __( 'Über 30 Min', 'mecfs-tracker' ), 'value' => 40 ],
+                    ],
+                ],
             ];
-            foreach ( $questions as $index => $question ) :
+            foreach ( $questions as $index => $data ) :
                 ?>
                 <fieldset class="bell-question">
-                    <legend><?php echo esc_html( $question ); ?></legend>
-                    <?php for ( $i = 0; $i <= 4; $i++ ) : ?>
-                        <label><input type="radio" name="bell_q<?php echo $index + 1; ?>" value="<?php echo $i; ?>" required /> <?php echo $i; ?></label>
-                    <?php endfor; ?>
+                    <legend><?php echo esc_html( $data['question'] ); ?></legend>
+                    <?php foreach ( $data['options'] as $option ) : ?>
+                        <label><input type="radio" name="bell_q<?php echo $index + 1; ?>" value="<?php echo esc_attr( $option['value'] ); ?>" required /> <?php echo esc_html( $option['label'] ); ?> &rarr; <?php echo intval( $option['value'] ); ?> <?php esc_html_e( 'Punkte', 'mecfs-tracker' ); ?></label>
+                    <?php endforeach; ?>
                 </fieldset>
                 <?php
             endforeach;
