@@ -16,9 +16,9 @@ WordPress-Plugin zum täglichen Erfassen von Bell-Score, emotionalem Zustand, in
 ## Bell-Score und emotionaler Zustand
 Der Bell-Score beschreibt die allgemeine Belastbarkeit auf einer Skala von 0–100. Im Formular wird er über einen kurzen Fragebogen ermittelt. 
 
-Der emotionale Zustand wird weiterhin über einen Schieberegler von 0–100 erfasst.
+Der emotionale Zustand wird über vier Schieberegler zu Angst, Stimmung, Antrieb und Depressivität erfasst. Jeder Regler reicht von 1 bis 10, zwei Fragen (Ängste, Depressivität) werden für die Auswertung invertiert.
 
-### Berechnungsgrundlage
+### Berechnungsgrundlage Bell-Score
 Der Fragebogen besteht aus fünf Fragen, die jeweils von 0 (schlechtester Zustand) bis 4 (bester Zustand) bewertet werden:
 
 1. Wie belastbar fühlen Sie sich heute körperlich?
@@ -32,6 +32,22 @@ Die Antworten werden summiert, durch die maximale Punktzahl (5 Fragen × 4 Punkt
 ```
 Bell-Score = (Summe der Antworten / 20) × 100
 ```
+
+### Berechnungsgrundlage emotionaler Zustand
+Die vier Fragen zum emotionalen Zustand sind:
+
+1. Wie stark fühlst Du Dich heute von Ängsten oder Sorgen belastet? *(invertiert)*
+2. Wie ist Deine allgemeine Stimmung heute?
+3. Wie stark ist Dein innerer Antrieb heute?
+4. Wie stark fühlst Du Dich heute von depressiven Gedanken oder Gefühlen belastet? *(invertiert)*
+
+Die Antworten liegen zwischen 1 und 10 Punkten. Bei invertierten Fragen wird der Wert mit `10 - Antwort` umgerechnet. Anschließend wird die Summe auf eine Skala von 0–100 normiert:
+
+```
+Emotion = ((Summe - Min) / (Max - Min)) × 100
+```
+
+Dabei ist `Min` die Anzahl der nicht invertierten Fragen × 1 und `Max` die Anzahl der invertierten Fragen × 9 plus die Anzahl der nicht invertierten Fragen × 10.
 
 ## Entwicklung und Build
 
