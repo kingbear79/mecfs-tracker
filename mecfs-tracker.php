@@ -16,13 +16,16 @@ define( 'MECFS_TRACKER_PLUGIN_FILE', __FILE__ );
 require_once __DIR__ . '/includes/autoloader.php';
 
 add_action( 'wp_enqueue_scripts', function() {
-    $post = get_post();
-    if ( $post && ( has_block( 'mecfs-tracker/form', $post ) || has_block( 'mecfs-tracker/export', $post ) || has_block( 'mecfs-tracker/chart', $post ) ) ) {
-        wp_enqueue_style( 'bootstrap', 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css', [], '5.3.3' );
-        wp_enqueue_script( 'bootstrap', 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js', [], '5.3.3', true );
-        wp_enqueue_style( 'mecfs-tracker', plugins_url( 'assets/mecfs-tracker.css', __FILE__ ), [ 'bootstrap' ], MECFS_TRACKER_VERSION );
-    }
-} );
+
+    wp_enqueue_style( 'bootstrap', 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css', [], '5.3.3' );
+}, 1 );
+
+add_action( 'wp_enqueue_scripts', function() {
+    wp_enqueue_script( 'bootstrap', 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js', [], '5.3.3', true );
+    wp_enqueue_style( 'mecfs-tracker', plugins_url( 'assets/mecfs-tracker.css', __FILE__ ), [ 'bootstrap' ], MECFS_TRACKER_VERSION );
+}, 11 );
+
+   
 
 if ( ! function_exists( 'mecfs_tracker_run' ) ) {
     function mecfs_tracker_run() {
