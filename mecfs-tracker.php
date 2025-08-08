@@ -2,7 +2,7 @@
 /**
  * Plugin Name: MECFS Tracker
  * Description: Tagesprotokoll für Bell-Score, Emotionen, Symptome und Notizen.
- * Version:     0.1.10
+ * Version:     0.1.11
  * Author:      Christian Schweden
  * Text Domain: mecfs-tracker
  * Update URI:  https://github.com/kingbear79/mecfs-tracker
@@ -10,12 +10,13 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'MECFS_TRACKER_VERSION', '0.1.10' );
+define( 'MECFS_TRACKER_VERSION', '0.1.11' );
 define( 'MECFS_TRACKER_PLUGIN_FILE', __FILE__ );
 
 require_once __DIR__ . '/includes/autoloader.php';
 
 add_action( 'wp_enqueue_scripts', function() {
+
     wp_enqueue_style( 'bootstrap', 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css', [], '5.3.3' );
 }, 1 );
 
@@ -23,6 +24,8 @@ add_action( 'wp_enqueue_scripts', function() {
     wp_enqueue_script( 'bootstrap', 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js', [], '5.3.3', true );
     wp_enqueue_style( 'mecfs-tracker', plugins_url( 'assets/mecfs-tracker.css', __FILE__ ), [ 'bootstrap' ], MECFS_TRACKER_VERSION );
 }, 11 );
+
+   
 
 if ( ! function_exists( 'mecfs_tracker_run' ) ) {
     function mecfs_tracker_run() {
