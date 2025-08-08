@@ -32,8 +32,8 @@ class Frontend_Form {
         $symptoms      = $wpdb->get_results( "SELECT id, label FROM $symptom_table ORDER BY label" );
         ob_start();
         ?>
-        <form id="mecfs-tracker-form">
-            <input type="date" name="entry_date" value="<?php echo esc_attr( current_time( 'Y-m-d' ) ); ?>" />
+        <form id="mecfs-tracker-form" class="d-flex flex-column gap-3">
+            <input type="date" class="form-control" name="entry_date" value="<?php echo esc_attr( current_time( 'Y-m-d' ) ); ?>" />
             <?php
             $questions = [
                 [
@@ -75,17 +75,24 @@ class Frontend_Form {
             ];
             foreach ( $questions as $index => $data ) :
                 ?>
-                <fieldset class="bell-question">
-                    <legend><?php echo esc_html( $data['question'] ); ?></legend>
-                    <?php foreach ( $data['options'] as $option ) : ?>
-                        <label><input type="radio" name="bell_q<?php echo $index + 1; ?>" value="<?php echo esc_attr( $option['value'] ); ?>" required /> <?php echo esc_html( $option['label'] ); ?> &rarr; <?php echo intval( $option['value'] ); ?> <?php esc_html_e( 'Punkte', 'mecfs-tracker' ); ?></label>
-                    <?php endforeach; ?>
-                </fieldset>
+                <div class="card bell-question">
+                    <div class="card-body">
+                        <label for="bell_q<?php echo $index + 1; ?>" class="form-label"><?php echo esc_html( $data['question'] ); ?></label>
+                        <select class="form-select" id="bell_q<?php echo $index + 1; ?>" name="bell_q<?php echo $index + 1; ?>" required>
+                            <option value="" selected disabled><?php esc_html_e( 'Bitte auswählen', 'mecfs-tracker' ); ?></option>
+                            <?php foreach ( $data['options'] as $option ) : ?>
+                                <option value="<?php echo esc_attr( $option['value'] ); ?>">
+                                    <?php echo esc_html( $option['label'] ); ?> &rarr; <?php echo intval( $option['value'] ); ?> <?php esc_html_e( 'Punkte', 'mecfs-tracker' ); ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                </div>
                 <?php
             endforeach;
             ?>
             <input type="hidden" name="bell_score" value="0" />
-            <div id="emotion-questions">
+            <div id="emotion-questions" class="d-flex flex-column gap-3">
                 <h4><?php esc_html_e( 'Emotionaler Zustand', 'mecfs-tracker' ); ?></h4>
                 <?php
                 $emotion_questions = [
@@ -116,40 +123,44 @@ class Frontend_Form {
                 ];
                 foreach ( $emotion_questions as $q ) :
                     ?>
-                    <div class="emotion-question">
-                        <label for="emotion-<?php echo esc_attr( $q['id'] ); ?>"><?php echo esc_html( $q['text'] ); ?></label>
-                        <input type="range" name="emotion[<?php echo esc_attr( $q['id'] ); ?>]" id="emotion-<?php echo esc_attr( $q['id'] ); ?>" min="1" max="10" value="5" />
-                        <span class="range-value">5</span>
-                        <div class="slider-scale"><span>1</span><span>10</span></div>
-                        <small><?php echo esc_html( $q['scale'] ); ?></small>
+                    <div class="emotion-question card">
+                        <div class="card-body">
+                            <label for="emotion-<?php echo esc_attr( $q['id'] ); ?>" class="form-label"><?php echo esc_html( $q['text'] ); ?></label>
+                            <input type="range" class="form-range" name="emotion[<?php echo esc_attr( $q['id'] ); ?>]" id="emotion-<?php echo esc_attr( $q['id'] ); ?>" min="1" max="10" value="5" />
+                            <span class="range-value">5</span>
+                            <div class="slider-scale"><span>1</span><span>10</span></div>
+                            <small class="text-muted"><?php echo esc_html( $q['scale'] ); ?></small>
+                        </div>
                     </div>
                     <?php
                 endforeach;
                 ?>
             </div>
             <input type="hidden" name="emotion" value="0" />
-            <div id="symptom-list">
-                <h4><?php esc_html_e( 'Symptome', 'mecfs-tracker' ); ?></h4>
-                <table class="symptom-table">
-                    <tbody id="symptom-table-body">
-                        <?php foreach ( $symptoms as $symptom ) : ?>
-                            <tr class="symptom-field">
-                                <td><?php echo esc_html( $symptom->label ); ?></td>
-                                <td>
-                                    <input type="range" name="symptoms[<?php echo intval( $symptom->id ); ?>]" min="0" max="100" value="0" />
-                                    <span class="range-value">0</span>
-                                    <div class="slider-scale"><span>0</span><span>100</span></div>
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
-                <button type="button" id="add-symptom"><?php esc_html_e( 'Symptom hinzufügen', 'mecfs-tracker' ); ?></button>
+            <div id="symptom-list" class="card">
+                <div class="card-body">
+                    <h4><?php esc_html_e( 'Symptome', 'mecfs-tracker' ); ?></h4>
+                    <table class="symptom-table table">
+                        <tbody id="symptom-table-body">
+                            <?php foreach ( $symptoms as $symptom ) : ?>
+                                <tr class="symptom-field">
+                                    <td><?php echo esc_html( $symptom->label ); ?></td>
+                                    <td>
+                                        <input type="range" class="form-range" name="symptoms[<?php echo intval( $symptom->id ); ?>]" min="0" max="100" value="0" />
+                                        <span class="range-value">0</span>
+                                        <div class="slider-scale"><span>0</span><span>100</span></div>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                    <button type="button" id="add-symptom" class="btn btn-outline-primary"><?php esc_html_e( 'Symptom hinzufügen', 'mecfs-tracker' ); ?></button>
+                </div>
             </div>
-            <textarea name="notes" placeholder="<?php esc_attr_e( 'Besonderheiten', 'mecfs-tracker' ); ?>"></textarea>
-            <textarea name="positives" placeholder="<?php esc_attr_e( 'Was hat gutgetan?', 'mecfs-tracker' ); ?>"></textarea>
-            <textarea name="negatives" placeholder="<?php esc_attr_e( 'Was hat belastet?', 'mecfs-tracker' ); ?>"></textarea>
-            <button type="submit"><?php esc_html_e( 'Speichern', 'mecfs-tracker' ); ?></button>
+            <textarea class="form-control" name="notes" placeholder="<?php esc_attr_e( 'Besonderheiten', 'mecfs-tracker' ); ?>"></textarea>
+            <textarea class="form-control" name="positives" placeholder="<?php esc_attr_e( 'Was hat gutgetan?', 'mecfs-tracker' ); ?>"></textarea>
+            <textarea class="form-control" name="negatives" placeholder="<?php esc_attr_e( 'Was hat belastet?', 'mecfs-tracker' ); ?>"></textarea>
+            <button type="submit" class="btn btn-primary"><?php esc_html_e( 'Speichern', 'mecfs-tracker' ); ?></button>
         </form>
         <?php
         return ob_get_clean();

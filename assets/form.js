@@ -14,7 +14,7 @@ jQuery(function ($) {
 
     let symptomIndex = 0;
     $('#add-symptom').on('click', function () {
-        const row = $('<tr class="symptom-field"><td><input type="text" name="new_symptoms[' + symptomIndex + '][label]" placeholder="Symptom" /></td><td><input type="range" name="new_symptoms[' + symptomIndex + '][severity]" min="0" max="100" value="0" /><span class="range-value">0</span><div class="slider-scale"><span>0</span><span>100</span></div></td></tr>');
+        const row = $('<tr class="symptom-field"><td><input type="text" class="form-control" name="new_symptoms[' + symptomIndex + '][label]" placeholder="Symptom" /></td><td><input type="range" class="form-range" name="new_symptoms[' + symptomIndex + '][severity]" min="0" max="100" value="0" /><span class="range-value">0</span><div class="slider-scale"><span>0</span><span>100</span></div></td></tr>');
         $('#symptom-table-body').append(row);
         addRangeListeners(row);
         symptomIndex++;
@@ -25,7 +25,7 @@ jQuery(function ($) {
         let sum = 0;
         const questions = 4;
         for (let i = 1; i <= questions; i++) {
-            const val = parseInt($('input[name="bell_q' + i + '"]:checked').val(), 10);
+            const val = parseInt($('select[name="bell_q' + i + '"]').val(), 10);
             if (isNaN(val)) {
                 alert('Bitte alle Fragen beantworten.');
                 return;
